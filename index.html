@@ -128,7 +128,7 @@
     </style>
 </head>
 <body>
-    <h1 class="question">Do you agree?</h1>
+    <h1 class="question">We need treat. Give us treat?</h1>
     
     <div class="buttons-container">
         <button class="yes-btn" id="yesBtn">Yes</button>
@@ -146,10 +146,6 @@
         const buttonsContainer = document.querySelector('.buttons-container');
 
         function getRandomPosition() {
-            // Calculate maximum safe positions to keep button within viewport
-            // window.innerWidth = total width of browser window
-            // noBtn.offsetWidth = width of the button
-            // We subtract button width + 20px padding to ensure button stays visible
             const maxX = window.innerWidth - noBtn.offsetWidth - 20;
             const maxY = window.innerHeight - noBtn.offsetHeight - 20;
             
