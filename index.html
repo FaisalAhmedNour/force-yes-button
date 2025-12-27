@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do you like me?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+            width: 110px;
+        }
+
+        button {
+            padding: 5px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .yes-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .yes-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .no-btn-container {
+            width: 40px;
+        }
+
+        .no-btn {
+            background-color: #f44336;
+            color: white;
+            position: fixed;
+        }
+
+        .no-btn:hover {
+            background-color: #da190b;
+        }
+
+        .thank-you-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 2rem 4rem;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .thank-you-message.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .question {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="question">Do you agree?</h1>
+    
+    <div class="buttons-container">
+        <button class="yes-btn" id="yesBtn">Yes</button>
+        <div class="no-btn-container"><button class="no-btn" id="noBtn">No</button></div>
+    </div>
+
+    <div class="thank-you-message" id="thankYouMessage">
+        Thank you! ❤️
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const thankYouMessage = document.getElementById('thankYouMessage');
+        const buttonsContainer = document.querySelector('.buttons-container');
+
+        function getRandomPosition() {
+            // Calculate maximum safe positions to keep button within viewport
+            // window.innerWidth = total width of browser window
+            // noBtn.offsetWidth = width of the button
+            // We subtract button width + 20px padding to ensure button stays visible
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            // Generate random position within safe bounds
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            // Ensure minimum 20px padding from edges
+            return {
+                x: Math.max(20, randomX),
+                y: Math.max(20, randomY)
+            };
+        }
+
+        function moveNoButton() {
+            const position = getRandomPosition();
+            noBtn.style.left = position.x + 'px';
+            noBtn.style.top = position.y + 'px';
+        }
+
+        // Move button on hover
+        noBtn.addEventListener('mouseenter', () => {
+            moveNoButton();
+        });
+
+        // Move button on click attempt
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // Show thank you message when Yes is clicked
+        yesBtn.addEventListener('click', () => {
+            thankYouMessage.classList.add('show');
+            
+            // Hide buttons
+            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            
+            // Optional: Hide the question after a delay
+            setTimeout(() => {
+                document.querySelector('.question').style.opacity = '0.3';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
